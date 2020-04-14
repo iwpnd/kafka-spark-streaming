@@ -1,0 +1,38 @@
+version: "3.3"
+services:
+  spark-master:
+    build:
+      context: ./
+      dockerfile: dockerfile-spark
+    container_name: spark-master
+    hostname: spark-master
+    ports:
+      - "8088:8088"
+      - "7077:7077"
+    networks:
+      - spark-network
+    environment:
+      - "SPARK_LOCAL_IP=spark-master"
+      - "SPARK_MASTER_PORT=7077"
+      - "SPARK_MASTER_WEBUI_PORT=8088"
+    command: "/start-spark-master.sh"
+  spark-worker:
+    build:
+      context: ./
+      dockerfile: dockerfile-spark
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    ports:
+      - 8088
+    networks:
+      - spark-network
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+      - "SPARK_WORKER_WEBUI_PORT=8088"
+    command: "/start-spark-worker.sh"
+networks:
+  spark-network:
+    driver: bridge
+    ipam:
+      driver: default

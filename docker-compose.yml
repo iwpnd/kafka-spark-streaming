@@ -16,11 +16,9 @@ services:
       - "SPARK_MASTER_PORT=7077"
       - "SPARK_MASTER_WEBUI_PORT=8088"
     command: "/start-spark-master.sh"
+    image: spark-master
   spark-worker:
-    build:
-      context: ./
-      dockerfile: dockerfile-spark
-    container_name: spark-worker
+    image: spark-master
     depends_on:
       - spark-master
     ports:

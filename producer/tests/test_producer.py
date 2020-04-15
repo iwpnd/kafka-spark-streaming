@@ -1,6 +1,6 @@
 from click.testing import CliRunner
 
-from producer import producer
+from producer.producer import producer
 
 
 def test_producer_cli_help():

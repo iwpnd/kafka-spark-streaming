@@ -1,0 +1,22 @@
+import types
+
+from .helpers import utils
+from producer.methods import lazy_load_json
+
+
+def test_lazy_load_json_generator(mock_data_file):
+    test = lazy_load_json(mock_data_file)
+    assert isinstance(test, types.GeneratorType)
+
+
+def test_lazy_load_json_valid(mock_data_file):
+    record = lazy_load_json(mock_data_file)
+    object1 = next(record)
+    assert object1["test1"]
+    assert utils.is_json(object1)
+    object2 = next(record)
+    assert object2["test2"]
+    assert utils.is_json(object2)
+    object3 = next(record)
+    assert object3["test3"]
+    assert utils.is_json(object3)

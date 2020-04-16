@@ -12,7 +12,7 @@ def lazy_load_json(path: str) -> Generator:
                 line = json.loads(line[1:-2])
             elif line.endswith(",\n"):
                 line = json.loads(line[:-2])
-            elif line.endswith("]"):
-                line = json.loads(line[:-1])
+            elif line.endswith("]\n"):
+                line = json.loads(line[:-2])
 
             yield line

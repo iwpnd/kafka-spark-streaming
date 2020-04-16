@@ -32,9 +32,6 @@ RUN pyenv install $PYTHON_VERSION
 RUN pyenv global $PYTHON_VERSION
 RUN pip install --upgrade pip && pyenv rehash
 
-# Clean
-RUN rm -rf ~/.cache/pip
-
 RUN wget http://apache.mirror.iphh.net/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz
 RUN tar -xzf spark-2.4.5-bin-hadoop2.7.tgz && \
     mv spark-2.4.5-bin-hadoop2.7 /spark && \
@@ -42,3 +39,11 @@ RUN tar -xzf spark-2.4.5-bin-hadoop2.7.tgz && \
 
 COPY /scripts/start-spark-master.sh /start-spark-master.sh
 COPY /scripts/start-spark-worker.sh /start-spark-worker.sh
+
+COPY requirements.txt requirements.txt
+COPY ./consumer /consumer
+RUN pip install -r requirements.txt
+RUN pip install -e consumer/
+
+# Clean
+RUN rm -rf ~/.cache/pip

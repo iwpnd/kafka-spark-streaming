@@ -41,7 +41,9 @@ def update_monitor_counter(monitor_url: str, increment_by: int) -> dict:
             dict
     """
 
-    payload = {"increment_by": increment_by}
-    response = requests.post(monitor_url, data=json.dumps(payload))
+    if increment_by > 0:
 
-    return response.json()
+        payload = {"increment_by": increment_by}
+        response = requests.post(monitor_url, data=json.dumps(payload))
+
+        return response.json()

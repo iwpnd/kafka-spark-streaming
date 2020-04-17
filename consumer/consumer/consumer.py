@@ -6,6 +6,7 @@ from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 
+from .methods import update_monitor_counter
 from .models import Record
 
 os.environ[
@@ -24,6 +25,11 @@ def consume():
 
     parsed = kafka_stream.map(lambda v: Record(**json.loads(v[1])).dict())
     count_in_batch = parsed.count().map(lambda x: f"Records in this batch: {x}")
+    monitor_count = parsed.count().map(
+        lambda x: update_monitor_counter(
+            monitor_url="http://monitor:8501/update/consumer", increment_by=int(x)
+        )
+    )
 
     country_dstream = parsed.map(lambda record: record["country"])
     country_counts = country_dstream.countByValue()
@@ -51,6 +57,7 @@ def consume():
     count_in_batch.pprint()
     country_representation = most_represented_country.union(least_represented_country)
     country_representation.pprint()
+    monitor_count.pprint()
 
     ssc.start()
     ssc.awaitTermination()

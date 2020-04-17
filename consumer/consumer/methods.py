@@ -1,5 +1,7 @@
+import json
 import re
 
+import requests
 from dateutil import parser
 
 
@@ -30,3 +32,22 @@ def validate_ip(ip_address: str) -> str:
         ip_address = "invalid"
 
     return ip_address
+
+
+def update_monitor_counter(monitor_url: str, increment_by: int) -> dict:
+    """ Update monitor counter
+
+        Post increment_by to monitor_url and update respective counter
+
+        Arguments:
+            monitor_url (str): monitor endpoint url
+            increment_by (int): increment counter by value
+
+        Returns:
+            dict
+    """
+
+    payload = {"increment_by": increment_by}
+    response = requests.post(monitor_url, data=json.dumps(payload))
+
+    return response.json()

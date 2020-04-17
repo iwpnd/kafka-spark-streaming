@@ -10,5 +10,6 @@ def test_producer_cli_help():
 
     assert result.exit_code == 0
     assert "kafkahost" in result.output
+    assert "monitorhost" in result.output
     assert "topic" in result.output
     assert "file" in result.output

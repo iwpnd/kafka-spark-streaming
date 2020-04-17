@@ -173,3 +173,22 @@ def get_gender_count(gender_counts: RDD, sc: SparkContext) -> RDD:
     ).map(lambda x: f"{x[0]}'s this batch:\t{x[1]}")
 
     return gender_distribution
+
+
+def get_hostname_counts(hostname_counts: RDD, sc: SparkContext) -> RDD:
+    """ Get hostname distribution in current batch
+
+        Arguments:
+            hostname_counts (RDD): rdd with hostname counts
+            sc (SparkContext): SparkContext
+
+        Returns:
+            RDD
+    """
+
+    hostname_top3 = hostname_counts.transform(lambda rdd: sc.parallelize(rdd.take(3)))
+    hostname_distribution = hostname_top3.transform(
+        lambda rdd: rdd.sortBy(lambda x: -x[1])
+    ).map(lambda x: f"Top3 hostnames this batch:\t{x[0]}\t(Count: {x[1]})")
+
+    return hostname_distribution

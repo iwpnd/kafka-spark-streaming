@@ -7,6 +7,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 
 from .methods import get_gender_count
+from .methods import get_hostname_counts
 from .methods import get_least_represented_country
 from .methods import get_most_represented_country
 from .methods import update_monitor_counter
@@ -46,7 +47,13 @@ def consume() -> None:
     country_representation = most_represented_country.union(least_represented_country)
     country_representation.pprint()
 
-    # count gender
+    # hostname counts
+    hostname_dstream = parsed.map(lambda record: record["email_host"])
+    hostname_counts = hostname_dstream.countByValue()
+    hostname_distribution = get_hostname_counts(hostname_counts=hostname_counts, sc=sc)
+    hostname_distribution.pprint()
+
+    # gender distribution
     gender_dstream = parsed.map(lambda record: record["gender"])
     gender_counts = gender_dstream.countByValue()
     gender_distribution = get_gender_count(gender_counts=gender_counts, sc=sc)
@@ -58,7 +65,10 @@ def consume() -> None:
             monitor_url="http://monitor:8501/update/consumer", increment_by=int(x)
         )
     )
-    monitor_count.pprint()
+    monitor_output = monitor_count.map(
+        lambda x: f"Pushed {x['incremented_by']} Records to Monitoring (Rolling count: {x['current_counter']}) - Status: {x['status']}"
+    )
+    monitor_output.pprint()
 
     ssc.start()
     ssc.awaitTermination()

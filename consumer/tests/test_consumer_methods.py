@@ -46,6 +46,20 @@ def test_validate_email(email, expectation):
 
 
 @pytest.mark.parametrize(
+    "email, expectation",
+    [
+        pytest.param("ben@iwpnd", "invalid"),
+        pytest.param("ben@iwpnd.pw", "iwpnd.pw"),
+        pytest.param("beniwpnd.pw", "invalid"),
+    ],
+)
+def test_validate_email_host(email, expectation):
+    parsed_email = methods.get_host(email)
+
+    assert parsed_email == expectation
+
+
+@pytest.mark.parametrize(
     "ip, expectation",
     [
         pytest.param("1.1.1.1", "1.1.1.1"),

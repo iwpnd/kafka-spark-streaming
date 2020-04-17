@@ -22,6 +22,7 @@ from consumer.consumer.models import Record
                 "first_name": "Loy",
                 "last_name": "Drain",
                 "email": "invalid",
+                "email_host": "invalid",
                 "gender": "Male",
                 "ip_address": "invalid",
                 "date": "23/02/2019",

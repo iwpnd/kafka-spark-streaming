@@ -9,6 +9,7 @@ class Record(BaseModel):
     first_name: str
     last_name: str
     email: str
+    email_host: str = None
     gender: str
     ip_address: str
     date: str
@@ -21,3 +22,12 @@ class Record(BaseModel):
 
     _email_val = validator("email", allow_reuse=True)(methods.validate_email)
     _ip_val = validator("ip_address", allow_reuse=True)(methods.validate_ip)
+
+    @validator("email_host", pre=True, always=True)
+    def get_hostname(cls, v, values, **kwargs):
+        if not v:
+            hostname = methods.get_host(values["email"])
+        else:
+            hostname = v
+
+        return hostname

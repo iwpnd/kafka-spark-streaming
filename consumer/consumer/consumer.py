@@ -29,7 +29,7 @@ def consume():
     country_counts = country_dstream.countByValue()
 
     country_counts_sorted_desc = country_counts.transform(
-        (lambda record: record.sortBy(lambda x: (-x[1])))
+        (lambda rdd: rdd.sortBy(lambda x: (-x[1])))
     )
     most_represented_country = country_counts_sorted_desc.transform(
         lambda rdd: sc.parallelize(rdd.take(1))
@@ -39,7 +39,7 @@ def consume():
     )
 
     country_counts_sorted_asc = country_counts.transform(
-        (lambda record: record.sortBy(lambda x: (x[1])))
+        (lambda rdd: rdd.sortBy(lambda x: (x[1])))
     )
     least_represented_country = country_counts_sorted_asc.transform(
         lambda rdd: sc.parallelize(rdd.take(1))
@@ -48,9 +48,9 @@ def consume():
         lambda x: f"Least represented country in batch: {x[0]} ({x[1]})"
     )
 
-    output = count_in_batch.union(most_represented_country)
-    output = output.union(least_represented_country)
-    output.pprint()
+    count_in_batch.pprint()
+    country_representation = most_represented_country.union(least_represented_country)
+    country_representation.pprint()
 
     ssc.start()
     ssc.awaitTermination()

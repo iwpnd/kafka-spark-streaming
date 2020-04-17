@@ -20,7 +20,9 @@ os.environ[
 
 def consume() -> None:
 
-    sc = SparkContext(master="spark://localhost:7077", appName="kafka-record-consumer")
+    sc = SparkContext(
+        master="spark://spark-master:7077", appName="kafka-record-consumer"
+    )
     ssc = StreamingContext(sc, 10)
 
     kafka_stream = KafkaUtils.createStream(

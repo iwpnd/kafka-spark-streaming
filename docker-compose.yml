@@ -19,12 +19,18 @@ services:
     image: spark-master
     depends_on:
       - spark-master
-    ports:
-      - 8088
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "SPARK_WORKER_WEBUI_PORT=8088"
     command: "/start-spark-worker.sh"
+  consumer:
+    image: spark-master
+    depends_on:
+      - spark-master
+    restart: unless-stopped
+    volumes:
+      - ./consumer/:/consumer
+    command: python consumer/main.py
   zookeeper:
     image: wurstmeister/zookeeper
     ports:

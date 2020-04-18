@@ -1,0 +1,18 @@
+[run]
+branch = True
+omit =
+    # omit anything in a .local directory anywhere
+    */tests/*
+    # omit this single file
+    producer/main.py
+    consumer/main.py
+    */__init__.py
+    */setup.py
+
+[report]
+ignore_errors = True
+exclude_lines =
+    if __name__ == .__main__.:
+
+[html]
+directory = coverage_html_report

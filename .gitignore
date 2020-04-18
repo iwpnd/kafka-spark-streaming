@@ -4,6 +4,7 @@
 *.ipynb
 .DS_Store
 TODO
+/coverage_html_report/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -41,21 +41,21 @@ to test the installation and all attached services.
 #### bring up all necessary services
 
 ```bash
-docker-compose up -d spark-master spark-worker zookeeper kafka monitor
+docker-compose up -d
 ```
 
-Will bring up all services such as Zookeeper, Apache Kafka, an Apache Spark Master and one Apache Spark worker with 1 Core / 2048MB of memory.
+Will bring up all services such as Zookeeper, Apache Kafka, an Apache Spark Master and one Apache Spark worker.
 You can check your:
 Apache Spark cluster metrics at: `http://localhost:8088/`
 Monitor docs at: `http://localhost:8501/docs`
 
-#### start the consumer service
+#### check logs of consumer service
 
 ```bash
-docker-compose up consumer
+docker-compose logs --follow consumer
 ```
 
-This will start the consumer and let you check the consumer logs for incoming batches from Kafka (interval=10seconds). It will print some generic metrics such as:
+This will let you check the consumer logs for incoming batches from Kafka (interval=10seconds). It will print some generic metrics such as:
 - records per batch
 - most represented country in batch
 - least represented country in batch
@@ -66,6 +66,7 @@ This will start the consumer and let you check the consumer logs for incoming ba
 #### start the producer
 
 ```bash
+# source venv/bin/activate
 python producer/main.py
 ```
 

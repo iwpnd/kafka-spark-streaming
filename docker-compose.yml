@@ -26,8 +26,6 @@ services:
     command: "/start-spark-worker.sh"
   consumer:
     image: spark-master
-    depends_on:
-      - spark-master
     restart: unless-stopped
     volumes:
       - ./consumer/:/consumer

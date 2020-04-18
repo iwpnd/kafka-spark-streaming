@@ -1,11 +1,12 @@
 from datetime import datetime
 
 from pydantic import BaseModel
+from pydantic import conint
 from pydantic import validator
 
 
 class CounterInput(BaseModel):
-    increment_by: int
+    increment_by: conint(gt=0)
 
 
 class CounterResponse(BaseModel):

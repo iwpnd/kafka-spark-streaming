@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 
 def test_counter_producer_success(test_app):
 
@@ -18,13 +20,18 @@ def test_counter_producer_success(test_app):
     assert response.json()["current_counter"] == 1
 
 
-def test_counter_producer_fails(test_app):
+@pytest.mark.parametrize(
+    "payload, expectation",
+    [
+        pytest.param({"increment_by": "String"}, 422),
+        pytest.param({"increment_by": 0}, 422),
+    ],
+)
+def test_counter_producer_fails(payload, expectation, test_app):
 
-    test_payload = {"increment_by": "String"}
+    response = test_app.post("/update/producer", data=json.dumps(payload))
 
-    response = test_app.post("/update/producer", data=json.dumps(test_payload))
-
-    assert response.status_code == 422
+    assert response.status_code == expectation
 
 
 def test_counter_consumer_success(test_app):
@@ -44,13 +51,18 @@ def test_counter_consumer_success(test_app):
     assert response.json()["current_counter"] == 1
 
 
-def test_counter_consumer_fails(test_app):
+@pytest.mark.parametrize(
+    "payload, expectation",
+    [
+        pytest.param({"increment_by": "String"}, 422),
+        pytest.param({"increment_by": 0}, 422),
+    ],
+)
+def test_counter_consumer_fails(payload, expectation, test_app):
 
-    test_payload = {"increment_by": "String"}
+    response = test_app.post("/update/consumer", data=json.dumps(payload))
 
-    response = test_app.post("/update/consumer", data=json.dumps(test_payload))
-
-    assert response.status_code == 422
+    assert response.status_code == expectation
 
 
 def test_metrics(test_app):

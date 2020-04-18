@@ -10,6 +10,8 @@ If you're on MacOS set an environment variable like:
 ```bash
 export DOCKER_KAFKA_HOST=$(ipconfig getifaddr en0)
 ```
+or add `DOCKER_KAFKA_HOST` to `~/.zshenv` and `source ~/.zshenv`.
+
 that is afterwards used in `docker-compose.yml` to identify the `KAFKA_ADVERTISED_HOST_NAME`. Some similar workaround has to exist for Windows users.
 For linux I assume you can just set it to `localhost` if you're only running on Kafka node. See [github.com/wurstmeister/kafka-docker/wiki/Connectivity](https://github.com/wurstmeister/kafka-docker/wiki/Connectivity).
 
@@ -27,6 +29,7 @@ This will create a `venv` dir with a virtual environment inside of `kafka-spark-
 
 #### testing
 ```bash
+# source venv/bin/activate
 pytest . -v
 ```
 
@@ -36,9 +39,9 @@ or
 make test
 ```
 
-to test the installation and all attached services.
+to test the installation and all the attached services.
 
-#### bring up all necessary services
+#### bring up all the necessary services
 
 ```bash
 docker-compose up -d

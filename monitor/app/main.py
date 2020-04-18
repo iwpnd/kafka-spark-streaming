@@ -1,7 +1,6 @@
 import prometheus_client
 from fastapi import FastAPI
 from fastapi import Response
-from loguru import logger
 from prometheus_client import Counter
 from prometheus_client import Summary
 from prometheus_client.core import CollectorRegistry

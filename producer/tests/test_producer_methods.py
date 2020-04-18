@@ -53,3 +53,16 @@ def test_update_monitor_counter(monkeypatch):
                 ]
             ]
         )
+
+
+def test_update_monitor_counter_empty(monkeypatch):
+    with requests_mock.Mocker() as m:
+        m.register_uri(
+            "POST", "https://localhost:8501/update/producer", status_code=422
+        )
+
+        response = methods.update_monitor_counter(
+            monitor_url="https://localhost:8501/update/producer", increment_by=0
+        )
+
+        assert not response

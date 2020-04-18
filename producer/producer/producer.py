@@ -22,12 +22,15 @@ from .methods import update_monitor_counter
 )
 @click.option("--file", default="producer/dataset/MOCK_DATA.json", help="json file")
 def produce(topic: str, kafkahost: str, monitorhost: str, file: str):
-    click.echo(f"Producing records from '{file}' to {kafkahost}/{topic}")
-
+    click.echo(f"connecting to kafkahost")
     client = KafkaClient(hosts=kafkahost)
+    click.echo(f"fetching target topic from kafkahost")
     target_topic = client.topics[topic]
+    click.echo(f"setup producer")
     producer = target_topic.get_producer()
     records_produced = 0
+
+    click.echo(f"Producing records from '{file}' to {kafkahost}/{topic}")
 
     for record in lazy_load_json(file):
         try:

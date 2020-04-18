@@ -18,4 +18,4 @@ install:
 	make test
 
 test:
-	${PYTHON} -m pytest --cov=producer --cov=consumer --cov=monitor -v
+	${PYTHON} -m pytest -v

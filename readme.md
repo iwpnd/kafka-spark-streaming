@@ -27,7 +27,7 @@ This will create a `venv` dir with a virtual environment inside of `kafka-spark-
 
 #### testing
 ```bash
-pytest --cov=producer --cov=consumer --cov=monitor -v
+pytest . -v
 ```
 
 or
@@ -41,11 +41,13 @@ to test the installation and all attached services.
 #### bring up all necessary services
 
 ```bash
-docker-compose up -d spark-master spark-worker zookeeper kafka
+docker-compose up -d spark-master spark-worker zookeeper kafka monitor
 ```
 
 Will bring up all services such as Zookeeper, Apache Kafka, an Apache Spark Master and one Apache Spark worker with 1 Core / 2048MB of memory.
-You can check your Apache Spark cluster metrics at `http://localhost:8088/`.
+You can check your:
+Apache Spark cluster metrics at: `http://localhost:8088/`
+Monitor docs at: `http://localhost:8501/docs`
 
 #### start the consumer service
 

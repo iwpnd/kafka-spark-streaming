@@ -13,11 +13,3 @@ def test_producer_cli_help():
     assert "monitorhost" in result.output
     assert "topic" in result.output
     assert "file" in result.output
-
-
-def test_producer_cli_produce():
-    runner = CliRunner()
-
-    result = runner.invoke(producer.produce)
-
-    assert "Producing" in result.output

@@ -13,10 +13,6 @@ export DOCKER_KAFKA_HOST=$(ipconfig getifaddr en0)
 that is afterwards used in `docker-compose.yml` to identify the `KAFKA_ADVERTISED_HOST_NAME`. Some similar workaround has to exist for Windows users.
 For linux I assume you can just set it to `localhost` if you're only running on Kafka node. See [github.com/wurstmeister/kafka-docker/wiki/Connectivity](https://github.com/wurstmeister/kafka-docker/wiki/Connectivity).
 
-```bash
-docker-compose up -d
-```
-
 ### installation / usage
 
 clone the repository and install the repository:
@@ -45,23 +41,25 @@ to test the installation and all attached services.
 #### bring up all necessary services
 
 ```bash
-docker-compose up -d
+docker-compose up -d spark-master spark-worker zookeeper kafka
 ```
 
 Will bring up all services such as Zookeeper, Apache Kafka, an Apache Spark Master and one Apache Spark worker with 1 Core / 2048MB of memory.
+You can check your Apache Spark cluster metrics at `http://localhost:8088/`.
 
-#### follow the consumer output
+#### start the consumer service
 
 ```bash
-docker-compose logs --follow consumer
+docker-compose up consumer
 ```
 
-This will let you check the consumer logs for incoming batches from Kafka. It will print some generic metrics such as:
+This will start the consumer and let you check the consumer logs for incoming batches from Kafka (interval=10seconds). It will print some generic metrics such as:
 - records per batch
 - most represented country in batch
 - least represented country in batch
 - top3 email hosts in batch
 - gender distribution in batch
+- push counts to monitor at `http://localhost:8501/update/consumer`
 
 #### start the producer
 
@@ -85,6 +83,7 @@ This will print something along the lines of:
 ```bash
 Producing records from 'producer/dataset/MOCK_DATA.json' to localhost:9092/example
 ```
+and in the background will push the counts of produced messages to `http://localhost:8501/update/producer`.
 
 #### monitoring
 

@@ -66,6 +66,8 @@ This will let you check the consumer logs for incoming batches from Kafka (inter
 - gender distribution in batch
 - push counts to monitor at `http://localhost:8501/update/consumer`
 
+**NOTE**: There are 5 (unless you scale your workers) services running to perform all this. You might not see the immediate output in `docker-compose logs --follow consumer` depending on your machine. You can follow the process by refreshing `http://localhost:8501/metrics`. Once the logs have caught up, you can check the metrics of every batch.
+
 #### start the producer
 
 ```bash
@@ -90,10 +92,6 @@ This will print something along the lines of:
 Producing records from 'producer/dataset/MOCK_DATA.json' to localhost:9092/example
 ```
 and in the background will push the counts of produced messages to `http://localhost:8501/update/producer`.
-
-# NOTE!
-
-There are 5 (unless you scale your workers) services running to perform all this. You might not see the immediate output in `docker-compose logs --follow consumer` depending on your machine. You can follow the process by refreshing `http://localhost:8501/metrics`. Once the logs have caught up, you can check the metrics of every batch.
 
 #### monitoring
 

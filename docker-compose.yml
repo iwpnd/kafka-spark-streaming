@@ -1,9 +1,9 @@
 version: "3.3"
 services:
-  master:
+  spark-master:
     build:
-      context: ./
-      dockerfile: dockerfile-spark
+      context: ./consumer
+      dockerfile: Dockerfile
     hostname: spark-master
     ports:
       - "8088:8088"
@@ -14,13 +14,15 @@ services:
       - "SPARK_MASTER_WEBUI_PORT=8088"
     command: "/start-spark-master.sh"
     image: spark-master
-  worker:
+  spark-worker:
     image: spark-master
     depends_on:
       - spark-master
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "SPARK_WORKER_WEBUI_PORT=8088"
+      - "SPARK_WORKER_CORES=1"
+      - "SPARK_WORKER_MEMORY=2048M"
     command: "/start-spark-worker.sh"
   consumer:
     image: spark-master
@@ -47,7 +49,9 @@ services:
     depends_on:
       - "zookeeper"
   monitor:
-    build: ./monitor
+    build:
+      context: ./monitor
+      dockerfile: Dockerfile
     command: uvicorn monitor.app.main:app --reload --workers 1 --host 0.0.0.0 --port 8501
     volumes:
         - ./monitor/:/usr/src/monitor

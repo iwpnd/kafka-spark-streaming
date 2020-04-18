@@ -1,3 +1,2 @@
 prometheus-client==0.7.1
 fastapi==0.54.1
-loguru==0.4.1

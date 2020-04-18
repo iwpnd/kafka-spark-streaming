@@ -22,15 +22,15 @@ from .methods import update_monitor_counter
 )
 @click.option("--file", default="producer/dataset/MOCK_DATA.json", help="json file")
 def produce(topic: str, kafkahost: str, monitorhost: str, file: str):
-    click.echo(f"connecting to kafkahost")
+    click.echo(f"connecting to kafkahost at: {kafkahost}")
     client = KafkaClient(hosts=kafkahost)
-    click.echo(f"fetching target topic from kafkahost")
+    click.echo(f"fetching target topic: {topic}")
     target_topic = client.topics[topic]
-    click.echo(f"setup producer")
+    click.echo(f"setting up producer")
     producer = target_topic.get_producer()
     records_produced = 0
 
-    click.echo(f"Producing records from '{file}' to {kafkahost}/{topic}")
+    click.echo(f"producing records from '{file}' to {kafkahost}/{topic}")
 
     for record in lazy_load_json(file):
         try:
@@ -49,7 +49,7 @@ def produce(topic: str, kafkahost: str, monitorhost: str, file: str):
         update_monitor_counter(monitor_url=monitorhost, increment_by=1)
 
     click.echo(
-        f"Produced {records_produced} records from '{file}' to {kafkahost}/{topic}"
+        f"produced {records_produced} records from '{file}' to {kafkahost}/{topic}"
     )
 
 

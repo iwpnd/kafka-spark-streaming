@@ -21,8 +21,8 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "SPARK_WORKER_WEBUI_PORT=8088"
-      - "SPARK_WORKER_CORES=1"
-      - "SPARK_WORKER_MEMORY=2048M"
+      - "SPARK_WORKER_CORES=2"
+      - "SPARK_WORKER_MEMORY=4096M"
     command: "/start-spark-worker.sh"
   consumer:
     image: spark-master

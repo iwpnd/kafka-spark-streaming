@@ -1,4 +1,3 @@
-#    Spark
 import json
 import os
 

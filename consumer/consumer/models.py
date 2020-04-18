@@ -5,6 +5,9 @@ from . import methods
 
 
 class Record(BaseModel):
+    """Pydantic model to store and validate incoming kafka messages
+    """
+
     id: int
     first_name: str
     last_name: str

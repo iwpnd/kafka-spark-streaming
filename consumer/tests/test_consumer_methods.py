@@ -1,4 +1,5 @@
 import pytest
+import requests_mock
 
 from consumer.consumer import methods
 
@@ -71,3 +72,46 @@ def test_validate_ip(ip, expectation):
     parsed_ip = methods.validate_ip(ip)
 
     assert parsed_ip == expectation
+
+
+def test_update_monitor_counter(monkeypatch):
+    with requests_mock.Mocker() as m:
+        m.register_uri(
+            "POST",
+            "https://localhost:8501/update/consumer",
+            json={
+                "incremented_by": 1,
+                "current_counter": 1,
+                "status": "HTTP_201_CREATED",
+                "timestamp_utc": "2020-04-17T09:43:42.370074",
+            },
+        )
+
+        response = methods.update_monitor_counter(
+            monitor_url="https://localhost:8501/update/consumer", increment_by=1
+        )
+
+        assert all(
+            [
+                key in response
+                for key in [
+                    "incremented_by",
+                    "current_counter",
+                    "status",
+                    "timestamp_utc",
+                ]
+            ]
+        )
+
+
+def test_update_monitor_counter_empty(monkeypatch):
+    with requests_mock.Mocker() as m:
+        m.register_uri(
+            "POST", "https://localhost:8501/update/consumer", status_code=422
+        )
+
+        response = methods.update_monitor_counter(
+            monitor_url="https://localhost:8501/update/consumer", increment_by=0
+        )
+
+        assert not response

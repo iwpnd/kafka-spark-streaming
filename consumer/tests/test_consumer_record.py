@@ -52,6 +52,30 @@ from consumer.consumer.models import Record
                 "country": "Philippines",
             },
         ),
+        pytest.param(
+            {
+                "id": 2,
+                "first_name": "Loy",
+                "last_name": "drain",
+                "email": "ldrain1@earthlink.de",
+                "email_host": "earthlink.de",
+                "gender": "male",
+                "ip_address": "218.176.26",
+                "date": "23.02.2019",
+                "country": "Philippines",
+            },
+            {
+                "id": 2,
+                "first_name": "Loy",
+                "last_name": "Drain",
+                "email": "ldrain1@earthlink.de",
+                "email_host": "earthlink.de",
+                "gender": "Male",
+                "ip_address": "invalid",
+                "date": "23/02/2019",
+                "country": "Philippines",
+            },
+        ),
     ],
 )
 def test_model_record(data, expectation):

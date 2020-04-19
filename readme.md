@@ -18,7 +18,7 @@ export DOCKER_KAFKA_HOST=$(ipconfig getifaddr en0)
 ```
 or add `DOCKER_KAFKA_HOST` to `~/.zshenv` and `source ~/.zshenv`.
 
-that is afterwards used in `docker-compose.yml` to identify the `KAFKA_ADVERTISED_HOST_NAME`. Some similar workaround has to exist for Windows users.
+`DOCKER_KAFKA_HOST` is used in `docker-compose.yml` to identify the `KAFKA_ADVERTISED_HOST_NAME`. Some similar workaround has to exist for Windows users that also rely on a VM to run Docker.
 For linux I assume you can just set it to `localhost` if you're only running on Kafka node. See [github.com/wurstmeister/kafka-docker/wiki/Connectivity](https://github.com/wurstmeister/kafka-docker/wiki/Connectivity).
 
 ### installation / usage
@@ -47,7 +47,7 @@ make test
 
 to test the installation and all the attached services.
 
-#### bring up all the necessary services
+#### bring up all the the necessary services
 
 ```bash
 docker-compose up -d
@@ -65,7 +65,7 @@ docker-compose logs --follow consumer
 ```
 
 This will let you check the consumer logs for incoming batches from Kafka (interval=10seconds). It will print some generic metrics such as:
-- records per batch
+- number of records per batch
 - most represented country in batch
 - least represented country in batch
 - top3 email hosts in batch

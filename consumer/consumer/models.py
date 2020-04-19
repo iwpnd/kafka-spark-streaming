@@ -18,6 +18,7 @@ class Record(BaseModel):
     date: str
     country: str
 
+    # custom validators
     _date_val = validator("date", allow_reuse=True)(methods.normalize_date)
     _capitalize_val = validator(
         "first_name", "last_name", "country", "gender", allow_reuse=True

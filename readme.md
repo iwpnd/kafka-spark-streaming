@@ -1,3 +1,9 @@
+<p align="left">
+<a href="https://github.com/iwpnd/kafka-spark-streaming/actions" target="_blank">
+    <img src="https://github.com/iwpnd/kafka-spark-streaming/workflows/build/badge.svg?branch=master" alt="Build Status">
+</a>
+</p>
+
 # kafka-spark-streaming
 
 Push records from .json file to an Apache Kafka topic. Consume said Apache Kafka topics messages with Apache Spark Streaming.

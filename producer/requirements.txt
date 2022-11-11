@@ -7,4 +7,4 @@ python-dateutil==2.8.0
 pykafka==2.8.0
 prometheus-client==0.7.1
 fastapi==0.65.2
-pyspark==2.4.5
+pyspark==3.2.2
